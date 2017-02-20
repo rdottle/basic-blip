@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
+  <script type="text/javascript" src="http://gka.github.io/chroma.js/vendor/chroma-js/chroma.min.js"></script>
+  <style>
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+  </style>
+</head>
+
+<body>
+  <h1> "Colours of the Lord of the Rings" </h1>
+  <script>
+    var colors2 = chroma.scale(["#E7D9D7", "#C5B6BA", "#C49790", "#53453C", "#1C110F",
+                "#DAD9C8", "#DEE8EB", "#AFB675", "#3A5B33", "#1C2516", "#FCD882", 
+                "#E8A577", "#DF7B74", "#4E2729", "#180109",
+                "#CCC8C0", "#C1C2CE", "#953155", "#391A26", "#160A11", "#D2F6FA"]);
+
+    var times = 19;
+    var colors = chroma.scale(['#52c2ab', '#f7e883', '#e75d87']);
+    colors2 = _.times(times + 1, i => colors2(i / times));
+    
+    var svg = d3.select("body").append("svg")
+      .attr("width", 960)
+      .attr("height", 500)
+    
+    var perRow = 5;
+    var size = 100;
+    var g = svg.selectAll('g')
+    	.data(colors2).enter().append('g')
+    	.attr('transform', (d, i) => {
+      	var x = (i % perRow + 1) * size;
+      	var y = (Math.floor(i / perRow) + 1) * size;
+      	return 'translate(' + [x, y] + ')';
+      }).attr('fill', d => d);
+    
+    g.append('circle')
+    	.attr('r', size / 4);
+    
+    g.append('text')
+    	.attr('y', size / 4 + 36)
+    	.attr('text-anchor', 'middle')
+    	.attr('dy', '.35em')
+    	.text((d, i) => d);
+  </script>
+</body>
